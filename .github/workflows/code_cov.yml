@@ -1,12 +1,9 @@
 name: test
 
 on:
-  # fix so that when i merge it does not fail on push with
-  # Error: Resource not accessible by integration
-  # this will run only on merging to main and will not run the post comment
-  push:
+  pull_request:
     branches:
-      - main
+      - "*"
 
 jobs:
   test:
@@ -31,4 +28,9 @@ jobs:
           python -m pytest -v tests
       - name: Run coverage tests
         run: |
-          pytest --cov=calculator tests/
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=calculator tests/ | tee pytest-coverage.txt
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
