@@ -1,9 +1,11 @@
 name: test
 
 on:
-  push:
-    branches:
-      - main
+  # fix so that when i merge it does not fail on push with
+  # Error: Resource not accessible by integration
+  # push:
+  #   branches:
+  #     - main
   pull_request:
     branches:
       - "*"
@@ -36,5 +38,4 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: ./pytest-coverage.txt
-          junitxml-path: ./pytest.xml          
-
+          junitxml-path: ./pytest.xml
